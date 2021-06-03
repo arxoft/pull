@@ -1,0 +1,36 @@
+#!/bin/bash
+set -e
+
+BRANCH=`git branch | grep '*' | sed 's/* //g' `
+BOLD=$(tput bold)
+NORMAL=$(tput sgr0)
+
+git config credential.helper 'cache --timeout 300'
+
+read -p "Enter tag name in dashed-string-case (or just press Enter to skip): " T
+if [ -n "$T" ]
+then
+	TAG=`date +%Y%m%d%H%M%S`-$T
+	git tag `date +%Y%m%d%H%M%S`-$T
+	echo "Tag created: $BOLD$TAG$NORMAL"
+
+	echo
+	echo "Pushing Tag..."
+	git push talha --tags
+else
+	echo "No tag given. Skipping."
+fi
+
+echo 
+read -p "Take database dump? (Y/N) " -n1 D
+echo
+case "$D" in 
+[Yy]*)  echo "Roger that. Taking DB Dump"
+        ./dump
+    ;;
+*) echo "Skipping DB Dump";;
+esac 
+ 
+echo 
+echo "Pulling $BOLD$BRANCH$NORMAL"
+git pull origin $BRANCH
