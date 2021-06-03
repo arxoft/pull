@@ -5,6 +5,17 @@ BRANCH=`git branch | grep '*' | sed 's/* //g' `
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 
+BASEURL="http://www.example.com/"
+DBNAME="yourdbname"
+DBUSER="yourdbuser"
+DBPASS="yourdbpass"
+
+TS=`date +%Y%m%d%H%M%S`
+FN="$TS-$DBNAME.sql.gz"
+FD="dumps/$FN"
+DWNURL="$BASEURL$FD"
+mkdir -p dumps
+
 git config credential.helper 'cache --timeout 300'
 
 read -p "Enter tag name in dashed-string-case (or just press Enter to skip): " T
@@ -16,7 +27,7 @@ then
 
 	echo
 	echo "Pushing Tag..."
-	git push talha --tags
+	git push origin --tags
 else
 	echo "No tag given. Skipping."
 fi
@@ -25,8 +36,12 @@ echo
 read -p "Take database dump? (Y/N) " -n1 D
 echo
 case "$D" in 
-[Yy]*)  echo "Roger that. Taking DB Dump"
-        ./dump
+[Yy]*)  echo "Roger that. Taking DB Dump: $DBNAME"
+	mysqldump -u $DBUSER -p"$DBPASS" $DBNAME | gzip > $FD
+	ls -lh $FD
+	echo
+	echo "Done"
+	echo "Download: $DWNURL"
     ;;
 *) echo "Skipping DB Dump";;
 esac 
