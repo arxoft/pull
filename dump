@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+clear
+
+BASEURL="http://www.example.com/"
+DBNAME="yourdbname"
+DBUSER="yourdbuser"
+DBPASS="yourdbpass"
+
+TS=`date +%Y%m%d%H%M%S`
+FN="$TS-$DBNAME.sql.gz"
+FD="dumps/$FN"
+DWNURL="$BASEURL$FD"
+
+mkdir -p dumps
+echo "Generating Dump: $DBNAME"
+mysqldump -u $DBUSER -p"$DBPASS" $DBNAME | gzip > $FD
+ls -lh $FD
+echo "Done"
+echo ""
+echo "Download: $DWNURL"
