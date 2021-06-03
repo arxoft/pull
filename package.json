@@ -1,0 +1,28 @@
+{
+  "name": "arxoft Pull",
+  "version": "1.0.0",
+  "description": "arxoftpull - The save-your-ass pull script",
+  "main": "index.js",
+  "scripts": {
+    "test": "pull test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arxoft/gitdistrict.git"
+  },
+  "bin": {
+    "arxoftpull": "./pull"
+  },
+  "keywords": [
+    "apache",
+    "ubuntu",
+    "mint",
+    "linux"
+  ],
+  "author": "Arxoft",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arxoft/pull/issues"
+  },
+  "homepage": "https://github.com/arxoft/pull#readme"
+}
