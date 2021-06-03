@@ -10,6 +10,13 @@ DBNAME="yourdbname"
 DBUSER="yourdbuser"
 DBPASS="yourdbpass"
 
+# WordPress support for DB details
+if test -f "wp-config.php"; then
+	DBNAME=$(sed -n "s/define( *'DB_NAME', *'\([^']*\)'.*/\1/p" wp-config.php)
+	DBUSER=$(sed -n "s/define( *'DB_USER', *'\([^']*\)'.*/\1/p" wp-config.php)
+	DBPASS=$(sed -n "s/define( *'DB_PASSWORD', *'\([^']*\)'.*/\1/p" wp-config.php)
+fi
+
 TS=`date +%Y%m%d%H%M%S`
 FN="$TS-$DBNAME.sql.gz"
 FD="dumps/$FN"
