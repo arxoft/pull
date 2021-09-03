@@ -5,6 +5,12 @@ BRANCH=`git branch | grep '*' | sed 's/* //g' `
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 
+ORIGIN=$1
+if [ -z "$ORIGIN" ]
+then
+  ORIGIN="origin"
+fi
+
 BASEURL="http://www.example.com/"
 DBNAME="yourdbname"
 DBUSER="yourdbuser"
@@ -34,7 +40,7 @@ then
 
 	echo
 	echo "Pushing Tag..."
-	git push origin --tags
+	git push $ORIGIN --tags
 else
 	echo "No tag given. Skipping."
 fi
@@ -55,4 +61,4 @@ esac
  
 echo 
 echo "Pulling $BOLD$BRANCH$NORMAL"
-git pull origin $BRANCH
+git pull $ORIGIN $BRANCH
